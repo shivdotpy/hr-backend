@@ -9,26 +9,50 @@ exports.saveEmployee = (req, res) => {
         mobile: req.body.mobile,
         role: req.body.role
     });
+    
 
-    employee.save((error, result) => {
+    employeeModel.findOne({empId: req.body.empId}, (error, employeeResult) => {
+
+        if (!req.body.empId) {
+            return res.status(400).send({
+                error: true,
+                message: 'Field "empId"required !'
+            })
+        }
+
         if (error) {
             res.status(500).send({
                 error: true,
                 message: 'Something went wrong, please try again later !',
                 data: error
             })
-        } else {
-            res.status(201).send({
-                error: false,
-                message: 'Employee saved successfully !'
+        } else if (employeeResult) {
+            res.status(400).send({
+                error: true,
+                message: 'Employee Id already exists'
             })
-
+        } else {
+            employee.save((error, result) => {
+                if (error) {
+                    res.status(500).send({
+                        error: true,
+                        message: 'Something went wrong, please try again later !',
+                        data: error
+                    })
+                } else {
+                    res.status(201).send({
+                        error: false,
+                        message: 'Employee saved successfully !'
+                    })
+        
+                }
+            })
         }
-    })
+    })    
 };
 
 exports.getAllEmployees = (req, res) => {
-    employeeModel.find({}, {_id: 0, empId: 1, firstName: 1, lastName: 1, mobile: 1}, (error, result) => {
+    employeeModel.find({}, {_id: 0, empId: 1, firstName: 1, lastName: 1, mobile: 1, role: 1}, (error, result) => {
         if (error) {
             res.status(500).send({
                 error: true,

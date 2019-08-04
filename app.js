@@ -8,7 +8,7 @@ const employeeRoutes = require('./src/routes/employee.routes');
 const salarySlipRoutes = require('./src/routes/salarySlip.routes');
 const adminRoutes = require('./src/routes/admin.routes');
 
-const PORT = 6000;
+const PORT = 8080;
 
 // Initialise the app
 const app = express();

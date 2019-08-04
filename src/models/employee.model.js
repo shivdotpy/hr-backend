@@ -5,10 +5,12 @@ const employeeModel = mongoose.Schema({
         type: Number
     },
     firstName: {
-        type: String
+        type: String,
+        lowercase: true
     },
     lastName: {
-        type: String
+        type: String,
+        lowercase: true
     },
     salary: {
         type: Number
