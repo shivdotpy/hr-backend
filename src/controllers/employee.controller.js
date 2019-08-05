@@ -52,7 +52,7 @@ exports.saveEmployee = (req, res) => {
 };
 
 exports.getAllEmployees = (req, res) => {
-    employeeModel.find({}, {_id: 0, empId: 1, firstName: 1, lastName: 1, mobile: 1, role: 1}, (error, result) => {
+    employeeModel.find({}, {_id: 0, empId: 1, firstName: 1, lastName: 1, mobile: 1, role: 1}, {sort: {'empId': 1}}, (error, result) => {
         if (error) {
             res.status(500).send({
                 error: true,
@@ -74,7 +74,8 @@ exports.getEmployeeById = (req, res) => {
         empId: 1,
         firstName: 1,
         lastName: 1,
-        mobile: 1
+        mobile: 1,
+        salary: 1
     }, (error, result) => {
         if (error) {
             res.status(500).send({
@@ -90,5 +91,27 @@ exports.getEmployeeById = (req, res) => {
         }
     })
 };
+
+exports.deleteEmployee = (req, res) => {
+    employeeModel.findOneAndRemove({empId: req.params.empId}, (error, deleted) => {
+        if (error) {
+            res.status(500).send({
+                error: true,
+                message: 'Something went wrong, please try again later !',
+                data: error
+            })
+        } else if (deleted) {
+            res.status(200).send({
+                error: false,
+                message: `Employee with empId : ${req.params.empId} deleted successfully !`
+            })
+        } else {
+            res.status(400).send({
+                error: true,
+                message: `No employee found with this empId: ${req.params.empId}`
+            })
+        }
+    })
+}
 
 

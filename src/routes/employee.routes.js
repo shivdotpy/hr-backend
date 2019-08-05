@@ -11,5 +11,7 @@ router.get('/', authMiddleware, employeeController.getAllEmployees);
 // GET ONE EMPLOYEE
 router.get('/:empId', authMiddleware, employeeController.getEmployeeById);
 
+// DELETE ONE EMPLOYEE WITH EMPID
+router.delete('/:empId', authMiddleware, employeeController.deleteEmployee);
 
 module.exports = router;
