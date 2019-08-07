@@ -75,7 +75,8 @@ exports.getEmployeeById = (req, res) => {
         firstName: 1,
         lastName: 1,
         mobile: 1,
-        salary: 1
+        salary: 1,
+        role: 1
     }, (error, result) => {
         if (error) {
             res.status(500).send({
