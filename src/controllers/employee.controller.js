@@ -9,9 +9,9 @@ exports.saveEmployee = (req, res) => {
         mobile: req.body.mobile,
         role: req.body.role
     });
-    
 
-    employeeModel.findOne({empId: req.body.empId}, (error, employeeResult) => {
+
+    employeeModel.findOne({ empId: req.body.empId }, (error, employeeResult) => {
 
         if (!req.body.empId) {
             return res.status(400).send({
@@ -44,15 +44,15 @@ exports.saveEmployee = (req, res) => {
                         error: false,
                         message: 'Employee saved successfully !'
                     })
-        
+
                 }
             })
         }
-    })    
+    })
 };
 
 exports.getAllEmployees = (req, res) => {
-    employeeModel.find({}, {_id: 0, empId: 1, firstName: 1, lastName: 1, mobile: 1, role: 1}, {sort: {'empId': 1}}, (error, result) => {
+    employeeModel.find({}, { _id: 0, empId: 1, firstName: 1, lastName: 1, mobile: 1, role: 1 }, { sort: { 'empId': 1 } }, (error, result) => {
         if (error) {
             res.status(500).send({
                 error: true,
@@ -69,7 +69,7 @@ exports.getAllEmployees = (req, res) => {
 };
 
 exports.getEmployeeById = (req, res) => {
-    employeeModel.findOne({empId: req.params.empId}, {
+    employeeModel.findOne({ empId: req.params.empId }, {
         _id: 0,
         empId: 1,
         firstName: 1,
@@ -93,8 +93,38 @@ exports.getEmployeeById = (req, res) => {
     })
 };
 
+
+exports.updateEmployeeById = (req, res) => {
+    employeeModel.findOne({ empId: req.params.empId }, (error, empDoc) => {
+        if (error) {
+            res.status(500).send({
+                error: true,
+                message: 'Something went wrong, please try again later !',
+                data: error
+            })
+        } else if (!empDoc) {
+            res.status(400).send({
+                error: true,
+                message: `No employee found with this empId: ${req.params.empId}`
+            })
+        } else {
+            empDoc.firstName = req.body.firstName
+            empDoc.lastName = req.body.lastName
+            empDoc.salary = req.body.salary
+            empDoc.mobile = req.body.mobile
+            empDoc.role = req.body.role
+            empDoc.save()
+            res.status(200).send({
+                error: false,
+                message: "Employee updated successfully !"
+            })
+        }
+    })
+}
+
+
 exports.deleteEmployee = (req, res) => {
-    employeeModel.findOneAndRemove({empId: req.params.empId}, (error, deleted) => {
+    employeeModel.findOneAndRemove({ empId: req.params.empId }, (error, deleted) => {
         if (error) {
             res.status(500).send({
                 error: true,
