@@ -9,11 +9,7 @@ const questionModel = mongoose.Schema({
     },
     type: {
         type: String
-    },
-    answers: {
-        type: Array
     }
-
 })
 
 module.exports = mongoose.model('question', questionModel)
