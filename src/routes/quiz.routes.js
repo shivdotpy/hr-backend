@@ -1,10 +1,10 @@
 const router = require('express').Router();
-const adminController = require('../controllers/admin.controller');
+const quizController = require('../controllers/quiz.controller');
+const authMiddleware = require('../middlewares/auth-middleware');
 
-// SAVE EMPLOYEE WITH ADMIN ROLE
-router.post('/', adminController.createAdmin);
+// ADD QUIZ CATEGORY
+router.post('/', authMiddleware, quizController.addQuiz)
 
-// LOGIN ADMIN
-router.post('/login', adminController.loginAdmin);
+router.get('/skills', authMiddleware, quizController.getAllQuizSkills)
 
 module.exports = router;
