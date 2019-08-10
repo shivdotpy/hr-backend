@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const quizModel = mongoose.Schema({
     skill: {
         type: String,
-        lowercase: true
+        lowercase: true,
+        unique: true    
     },
     questions: [{
         type: mongoose.Schema.Types.ObjectId,

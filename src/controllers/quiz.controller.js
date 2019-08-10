@@ -1,5 +1,6 @@
 const quizModel = require('../models/quiz.model');
 const questionModel = require('../models/question.model');
+const controllerResponses = require('../utils/controllerResponses');
 
 exports.addQuiz = (req, res) => {
     const Quiz = new quizModel({
@@ -7,11 +8,7 @@ exports.addQuiz = (req, res) => {
     })
     Quiz.save((error, result) => {
         if (error) {
-            res.status(500).send({
-                error: true,
-                message: 'Something went wrong, please try again later !',
-                data: error
-            })
+            controllerResponses.error500SomethingWentWrong(req, res, error);
         } else {
             res.status(200).send({
                 error: false,
@@ -24,11 +21,7 @@ exports.addQuiz = (req, res) => {
 exports.getAllQuizSkills = (req, res) => {
     quizModel.find({}, { skill: 1, _id: 0 }, (error, result) => {
         if (error) {
-            res.status(500).send({
-                error: true,
-                message: 'Something went wrong, please try again later !',
-                data: error
-            })
+            controllerResponses.error500SomethingWentWrong(req, res, error);
         } else {
             res.status(200).send({
                 error: false,
@@ -48,11 +41,7 @@ exports.addQuestion = (req, res) => {
     } else {
         quizModel.findOne({ skill: req.body.skill }, (error, result) => {
             if (error) {
-                res.status(500).send({
-                    error: true,
-                    message: 'Something went wrong, please try again later !',
-                    data: error
-                })
+                controllerResponses.error500SomethingWentWrong(req, res, error);
             } else if (!result) {
                 res.status(400).send({
                     error: true,
@@ -66,11 +55,7 @@ exports.addQuestion = (req, res) => {
                 })
                 question.save((saveError, savedQuestion) => {
                     if (saveError) {
-                        res.status(500).send({
-                            error: true,
-                            message: 'Something went wrong, please try again later !',
-                            data: saveError
-                        })
+                        controllerResponses.error500SomethingWentWrong(req, res, saveError);
                     } else {
                         let questionIdArr = [...result.questions]
                         questionIdArr.push(savedQuestion._id)
@@ -78,11 +63,7 @@ exports.addQuestion = (req, res) => {
                         result.questions = questionIdArr
                         result.save((errorSaveId, resultSaveId) => {
                             if (errorSaveId) {
-                                res.status(500).send({
-                                    error: true,
-                                    message: 'Something went wrong, please try again later !',
-                                    data: saveError
-                                })
+                                controllerResponses.error500SomethingWentWrong(req, res, errorSaveId);
                             } else {
                                 res.status(200).send({
                                     error: false,
@@ -100,11 +81,7 @@ exports.addQuestion = (req, res) => {
 exports.getQuetionBySkill = (req, res) => {
     quizModel.find({skill: req.params.skill}, (error,result) => {
         if (error) {
-            res.status(500).send({
-                error: true,
-                message: 'Something went wrong, please try again later !',
-                data: saveError
-            })
+            controllerResponses.error500SomethingWentWrong(req, res, error);
         } else (
             res.status(200).send({
                 error: false,
