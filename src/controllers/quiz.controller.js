@@ -79,15 +79,20 @@ exports.addQuestion = (req, res) => {
 }
 
 exports.getQuetionBySkill = (req, res) => {
-    quizModel.find({skill: req.params.skill}, (error,result) => {
+    quizModel.findOne({ skill: req.params.skill }, (error, result) => {
         if (error) {
             controllerResponses.error500SomethingWentWrong(req, res, error);
-        } else (
+        } else if (result) {
             res.status(200).send({
                 error: false,
                 message: 'Questions found',
-                data: result
+                data: result.questions
             })
-        )
-    }).populate('questions', 'options.option')
+        } else {
+            res.status(400).send({
+                error: true,
+                message: 'No skill matched with this skill'
+            })
+        }
+    }).populate('questions')
 }

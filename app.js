@@ -7,7 +7,8 @@ const cors = require('cors');
 const employeeRoutes = require('./src/routes/employee.routes');
 const salarySlipRoutes = require('./src/routes/salarySlip.routes');
 const adminRoutes = require('./src/routes/admin.routes');
-const quizRoutes = require('./src/routes/quiz.routes')
+const quizRoutes = require('./src/routes/quiz.routes');
+const candidateRoutes = require('./src/routes/candidate.routes');
 
 const PORT = 8080;
 
@@ -28,6 +29,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/employee', employeeRoutes);
 app.use('/api/salary-slip', salarySlipRoutes);
 app.use('/api/quiz', quizRoutes)
+app.use('/api/candidate', candidateRoutes)
 // Routes Ends
 
 
