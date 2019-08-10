@@ -15,14 +15,14 @@ exports.addQuiz = (req, res) => {
         } else {
             res.status(200).send({
                 error: false,
-                message: 'Quiz saved successfully !'
+                message: 'Skill saved successfully !'
             })
         }
-    })   
+    })
 }
 
 exports.getAllQuizSkills = (req, res) => {
-    quizModel.find({},{skill:1, _id:0}, (error, result) => {
+    quizModel.find({}, { skill: 1, _id: 0 }, (error, result) => {
         if (error) {
             res.status(500).send({
                 error: true,
@@ -46,7 +46,7 @@ exports.addQuestion = (req, res) => {
             message: 'Skill is required to save question'
         })
     } else {
-        quizModel.findOne({skill: req.body.skill}, (error, result) => {
+        quizModel.findOne({ skill: req.body.skill }, (error, result) => {
             if (error) {
                 res.status(500).send({
                     error: true,
@@ -76,10 +76,41 @@ exports.addQuestion = (req, res) => {
                         questionIdArr.push(savedQuestion._id)
 
                         result.questions = questionIdArr
-                        result.save()
+                        result.save((errorSaveId, resultSaveId) => {
+                            if (errorSaveId) {
+                                res.status(500).send({
+                                    error: true,
+                                    message: 'Something went wrong, please try again later !',
+                                    data: saveError
+                                })
+                            } else {
+                                res.status(200).send({
+                                    error: false,
+                                    message: 'Question saved successfully !'
+                                })
+                            }
+                        })
                     }
                 })
             }
-        })   
+        })
     }
+}
+
+exports.getQuetionBySkill = (req, res) => {
+    quizModel.find({skill: req.params.skill}, (error,result) => {
+        if (error) {
+            res.status(500).send({
+                error: true,
+                message: 'Something went wrong, please try again later !',
+                data: saveError
+            })
+        } else (
+            res.status(200).send({
+                error: false,
+                message: 'Questions found',
+                data: result
+            })
+        )
+    }).populate('questions', 'options.option')
 }
