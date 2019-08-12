@@ -14,4 +14,7 @@ router.post('/question', authMiddleware, quizController.addQuestion)
 // GET QUESTION BY SKILL
 router.get('/questions/:skill', authMiddleware, quizController.getQuetionBySkill)
 
+// GET ALL QUESTIONS
+router.get('/all-questions', authMiddleware, quizController.getAllQuestions)
+
 module.exports = router;

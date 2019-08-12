@@ -51,7 +51,8 @@ exports.addQuestion = (req, res) => {
                 const question = new questionModel({
                     title: req.body.title,
                     options: req.body.options,
-                    type: req.body.type
+                    type: req.body.type,
+                    skill: req.body.skill
                 })
                 question.save((saveError, savedQuestion) => {
                     if (saveError) {
@@ -95,4 +96,17 @@ exports.getQuetionBySkill = (req, res) => {
             })
         }
     }).populate('questions')
+}
+
+exports.getAllQuestions = (req, res) => {
+    questionModel.find({}, (error, result) => {
+        if (error) {
+            controllerResponses.error500SomethingWentWrong(req, res, error)
+        } else {
+            res.status(200).send({
+                error: false,
+                data: result
+            })
+        }
+    })
 }

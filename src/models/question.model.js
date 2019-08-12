@@ -9,6 +9,9 @@ const questionModel = mongoose.Schema({
     },
     type: {
         type: String
+    },
+    skill: {
+        type: String
     }
 })
 
